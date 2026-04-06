@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum WaitlistStatus {
+  WAITING
+  CALLED
+  SEATED
+  CANCELED
+}
+
+model WaitlistEntry {
+  id                   String         @id @default(cuid())
+  // Human-readable queue number assigned at join time, e.g. "A001"
+  queueNumber          String         @unique
+  name                 String
+  phone                String
+  partySize            Int
+  status               WaitlistStatus @default(WAITING)
+  // Estimated wait in minutes, captured at time of entry
+  estimatedWaitMinutes Int
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+
+  @@map("waitlist_entries")
+}
