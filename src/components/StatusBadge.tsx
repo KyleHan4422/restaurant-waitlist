@@ -9,6 +9,10 @@ const config: Record<WaitlistStatus, { label: string; className: string }> = {
     label: "Seated",
     className: "bg-green-100 text-green-800 ring-1 ring-green-200",
   },
+  CALLED: {
+    label: "Called",
+    className: "bg-blue-100 text-blue-800 ring-1 ring-blue-200",
+  },
   CANCELED: {
     label: "Canceled",
     className: "bg-slate-100 text-slate-500 ring-1 ring-slate-200",

@@ -59,6 +59,74 @@ export async function joinWaitlist(formData: FormData) {
   redirect(`/confirmation/${entry.id}`);
 }
 
+export type AddCustomerResult =
+  | {
+      success: true;
+      entry: {
+        name: string;
+        partySize: number;
+        queuePosition: number;
+        estimatedWaitMinutes: number;
+      };
+    }
+  | { success: false; error: string };
+
+/** Add a customer to the waitlist (staff form — no phone required). */
+export async function addCustomer(
+  formData: FormData
+): Promise<AddCustomerResult> {
+  try {
+    const rawName = formData.get("name");
+    const rawPartySize = formData.get("partySize");
+
+    if (!rawName || typeof rawName !== "string" || rawName.trim().length === 0) {
+      return { success: false, error: "Customer name is required." };
+    }
+    const name = rawName.trim();
+    if (name.length > 100)
+      return { success: false, error: "Name must be 100 characters or fewer." };
+
+    const partySize = parseInt(rawPartySize as string, 10);
+    if (isNaN(partySize) || partySize < 1)
+      return { success: false, error: "Party size must be at least 1." };
+    if (partySize > 99)
+      return { success: false, error: "Party size cannot exceed 99." };
+
+    const currentWaiting = await getActiveWaitlist();
+    const { estimatedWaitMinutes } = calculateEstimatedWait(currentWaiting);
+    const queueNumber = await generateQueueNumber();
+
+    const entry = await db.waitlistEntry.create({
+      data: {
+        queueNumber,
+        name,
+        phone: "",
+        partySize,
+        status: WaitlistStatus.WAITING,
+        estimatedWaitMinutes,
+      },
+    });
+
+    revalidatePath("/");
+    revalidatePath("/waitlist");
+
+    return {
+      success: true,
+      entry: {
+        name: entry.name,
+        partySize: entry.partySize,
+        queuePosition: currentWaiting.length + 1,
+        estimatedWaitMinutes: entry.estimatedWaitMinutes,
+      },
+    };
+  } catch (error) {
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Failed to add customer.",
+    };
+  }
+}
+
 export type UpdateStatusResult =
   | { success: true }
   | { success: false; error: string };
