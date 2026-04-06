@@ -24,7 +24,7 @@ export default async function HomePage() {
     0
   );
 
-  const nowServing = called?.queueNumber ?? null;
+  const nowServing = called?.queueNumber ?? waiting[0]?.queueNumber ?? null;
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-between px-8 py-12 bg-neutral-950">
@@ -50,7 +50,7 @@ export default async function HomePage() {
               {nowServing}
             </p>
           ) : (
-            <p className="text-5xl font-bold text-neutral-600">—</p>
+            <p className="text-5xl font-bold text-neutral-500">—</p>
           )}
         </div>
 
