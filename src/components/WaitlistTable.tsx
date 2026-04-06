@@ -3,11 +3,11 @@
 import { useState, useTransition } from "react";
 import type { WaitlistEntry } from "@prisma/client";
 import { $Enums } from "@prisma/client";
+import { updateStatus } from "@/actions/waitlist";
+import { StatusBadge } from "./StatusBadge";
 
 const WaitlistStatus = $Enums.WaitlistStatus;
 type WaitlistStatus = $Enums.WaitlistStatus;
-import { updateStatus } from "@/actions/waitlist";
-import { StatusBadge } from "./StatusBadge";
 
 interface Props {
   entries: WaitlistEntry[];
