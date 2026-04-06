@@ -1,14 +1,12 @@
 "use client";
 
 import { useRef, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { joinWaitlist } from "@/actions/waitlist";
 
 const PARTY_SIZES = [1, 2, 3, 4, 5, 6, 7, 8];
 
 export default function JoinPage() {
-  const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
@@ -60,7 +58,7 @@ export default function JoinPage() {
       <div className="mb-10">
         <h1 className="text-4xl font-bold text-white">Join the Waitlist</h1>
         <p className="mt-2 text-neutral-500 text-lg">
-          We'll add your party to the queue right away.
+          We&apos;ll add your party to the queue right away.
         </p>
       </div>
 

@@ -40,12 +40,12 @@ export default async function ConfirmationPage({
         </div>
 
         <div>
-          <p className="text-green-400 font-semibold text-lg mb-1">You're on the list!</p>
+          <p className="text-green-400 font-semibold text-lg mb-1">You&apos;re on the list!</p>
           <h2 className="text-3xl font-bold text-white">
             Welcome, {entry.name}
           </h2>
           <p className="text-neutral-500 mt-2">
-            Party of {entry.partySize} · We'll seat you when your number is called
+            Party of {entry.partySize} · We&apos;ll seat you when your number is called
           </p>
         </div>
 
